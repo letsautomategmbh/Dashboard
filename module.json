@@ -1,0 +1,26 @@
+{
+    "name": "Dashboard",
+    "alias": "dashboard",
+    "description": "A personal, customizable widget grid - add Upcoming Events, Zeiterfassung, Meine Nachrichten, Projekte, Aufgaben, Statistiken and more, drag to reorder, pick a size per widget.",
+    "keywords": [
+        "dashboard",
+        "widgets",
+        "grid",
+        "overview",
+        "start"
+    ],
+    "version": "1.0.0",
+    "img": "data:image/png;base64,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",
+    "author": "let's automate",
+    "authorUrl": "https://letsautomate.ch",
+    "latestVersionUrl": "https://raw.githubusercontent.com/letsautomategmbh/Dashboard/main/module.json",
+    "latestVersionZipUrl": "https://codeload.github.com/letsautomategmbh/Dashboard/zip/refs/heads/main",
+    "active": 1,
+    "order": 910,
+    "providers": [
+        "Modules\\Dashboard\\Providers\\DashboardServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
