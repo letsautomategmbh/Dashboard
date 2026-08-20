@@ -20,7 +20,8 @@
                 <div class="dash-widget dash-widget-{{ $widget['size'] }}" data-widget-id="{{ $widget['id'] }}" data-widget-key="{{ $widget['key'] }}">
                     <div class="dash-widget-header">
                         <span class="dash-widget-handle glyphicon glyphicon-move" title="{{ __('Drag to reorder') }}"></span>
-                        <span class="dash-widget-title"><i class="glyphicon {{ $widget['icon'] }}"></i> {{ $widget['label'] }}</span>
+                        <span class="dash-widget-icon glyphicon {{ $widget['icon'] }}"></span>
+                        <span class="dash-widget-title">{{ __($widget['label']) }}</span>
                         @if ($widget['cyclable'])
                             <button type="button" class="btn-icon dash-widget-resize" title="{{ __('Change size') }}"><i class="glyphicon glyphicon-resize-full"></i></button>
                         @endif
@@ -40,7 +41,7 @@
             <div id="dash-picker-list">
                 @forelse ($availableToAdd as $item)
                     <div class="dash-picker-item" data-widget-key="{{ $item['key'] }}">
-                        <i class="glyphicon {{ $item['icon'] }}"></i> {{ $item['label'] }}
+                        <i class="glyphicon {{ $item['icon'] }}"></i> {{ __($item['label']) }}
                     </div>
                 @empty
                     <div class="dash-picker-empty">{{ __('All available widgets are already on your board.') }}</div>

@@ -12,7 +12,7 @@
     --dash-text-muted: #777777;
     --dash-accent: #3a5ac4;
     --dash-accent-soft: rgba(58, 90, 196, .08);
-    --dash-radius: 10px;
+    --dash-radius: 12px;
     --dash-shadow: 0 1px 2px rgba(15, 23, 42, .06), 0 1px 1px rgba(15, 23, 42, .04);
     color: var(--dash-text);
 }
@@ -42,14 +42,41 @@ html.themes-dark-active .dash-app {
 }
 
 .dash-widget {
+    /* Per-widget-type accent — a small, fixed palette (same 8 hex values
+       already used project-wide for tag/category colors, e.g.
+       SnippetTag::$palette) reused here so each widget kind reads as its
+       own "brand" on the board rather than everything sharing one blue.
+       Falls back to --dash-accent for any key not listed (new/unknown
+       widgets stay themed instead of unstyled). */
+    --dash-widget-accent: var(--dash-accent);
     background: var(--dash-card-bg);
     border: 1px solid var(--dash-border);
+    border-top: 3px solid var(--dash-widget-accent);
     border-radius: var(--dash-radius);
     box-shadow: var(--dash-shadow);
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    transition: box-shadow .15s ease;
 }
+.dash-widget:hover {
+    box-shadow: 0 4px 14px rgba(15, 23, 42, .1), 0 1px 2px rgba(15, 23, 42, .06);
+}
+.dash-widget[data-widget-key="upcoming_events"] { --dash-widget-accent: #3f7cac; }
+.dash-widget[data-widget-key="timetracking"] { --dash-widget-accent: #3f9142; }
+.dash-widget[data-widget-key="my_conversations"] { --dash-widget-accent: #7b5ea7; }
+.dash-widget[data-widget-key="projects"] { --dash-widget-accent: #8b5e3c; }
+.dash-widget[data-widget-key="tasks"] { --dash-widget-accent: #e8734a; }
+.dash-widget[data-widget-key="statistics"] { --dash-widget-accent: #d4a017; }
+.dash-widget[data-widget-key="week_report_status"] { --dash-widget-accent: #3f7cac; }
+.dash-widget[data-widget-key="holiday_balance"] { --dash-widget-accent: #3f9142; }
+.dash-widget[data-widget-key="notes"] { --dash-widget-accent: #d4a017; }
+.dash-widget[data-widget-key="quick_actions"] { --dash-widget-accent: #607d8b; }
+.dash-widget[data-widget-key="open_invoices"] { --dash-widget-accent: #c0392b; }
+.dash-widget[data-widget-key="bexio_sync_status"] { --dash-widget-accent: #607d8b; }
+.dash-widget[data-widget-key="team_billable_hours"] { --dash-widget-accent: #7b5ea7; }
+.dash-widget[data-widget-key="my_weekly_billable"] { --dash-widget-accent: #e8734a; }
+
 .dash-widget-small { grid-column: span 1; grid-row: span 1; }
 .dash-widget-medium { grid-column: span 2; grid-row: span 1; }
 .dash-widget-large { grid-column: span 2; grid-row: span 2; }
@@ -64,18 +91,31 @@ html.themes-dark-active .dash-app {
 .dash-widget-header {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 8px 10px;
-    border-bottom: 1px solid var(--dash-border);
+    gap: 8px;
+    padding: 10px 12px;
     flex-shrink: 0;
 }
 .dash-widget-handle {
     cursor: grab;
     color: var(--dash-text-muted);
+    opacity: .5;
+}
+.dash-widget:hover .dash-widget-handle { opacity: 1; }
+.dash-widget-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    background: color-mix(in srgb, var(--dash-widget-accent) 16%, transparent);
+    color: var(--dash-widget-accent);
+    font-size: 13px;
+    flex-shrink: 0;
 }
 .dash-widget-title {
     flex: 1 1 auto;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 13px;
     white-space: nowrap;
     overflow: hidden;
@@ -88,16 +128,20 @@ html.themes-dark-active .dash-app {
     cursor: pointer;
     padding: 2px 4px;
     line-height: 1;
+    opacity: .5;
 }
+.dash-widget:hover .dash-widget-header .btn-icon { opacity: 1; }
 .dash-widget-header .btn-icon:hover {
     color: var(--dash-text);
 }
 
 .dash-widget-body {
     flex: 1 1 auto;
-    padding: 10px 12px;
+    padding: 4px 14px 12px;
     overflow: auto;
     font-size: 13px;
+    display: flex;
+    flex-direction: column;
 }
 
 .dash-placeholder {
@@ -115,86 +159,153 @@ html.themes-dark-active .dash-app {
 
 .dash-stat-row {
     display: flex;
-    gap: 20px;
-    margin-bottom: 8px;
+    gap: 24px;
+    margin-bottom: 10px;
 }
 .dash-stat {
     display: flex;
     flex-direction: column;
 }
 .dash-stat-value {
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.2;
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--dash-widget-accent);
+    font-variant-numeric: tabular-nums;
 }
 .dash-stat-label {
     font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
     color: var(--dash-text-muted);
+    margin-top: 2px;
 }
 
 .dash-list {
     display: flex;
     flex-direction: column;
-    margin-bottom: 6px;
+    margin: 0 -8px 6px;
 }
 .dash-list-item {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     gap: 8px;
-    padding: 4px 0;
+    padding: 6px 8px;
+    border-radius: 7px;
     color: var(--dash-text);
-    border-bottom: 1px solid var(--dash-border);
     text-decoration: none;
 }
-.dash-list-item:last-child { border-bottom: none; }
-.dash-list-item:hover { color: var(--dash-accent); }
+.dash-list-item:hover { background: var(--dash-accent-soft); color: var(--dash-widget-accent); }
 .dash-list-item-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-weight: 500;
+}
+.dash-list-item-label::before {
+    content: "";
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--dash-widget-accent);
+    opacity: .55;
 }
 .dash-list-item-value {
     flex-shrink: 0;
     color: var(--dash-text-muted);
     font-size: 12px;
+    font-variant-numeric: tabular-nums;
 }
 
 .dash-bars {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 9px;
     margin-bottom: 8px;
 }
 .dash-bar-row {
     display: grid;
-    grid-template-columns: 36px 1fr 44px;
+    grid-template-columns: 38px 1fr 48px;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     font-size: 11px;
 }
 .dash-bar-day {
     color: var(--dash-text-muted);
+    font-weight: 600;
 }
 .dash-bar-track {
-    background: var(--dash-accent-soft);
-    border-radius: 4px;
-    height: 6px;
+    background: color-mix(in srgb, var(--dash-widget-accent) 14%, transparent);
+    border-radius: 20px;
+    height: 9px;
     overflow: hidden;
 }
 .dash-bar-fill {
     display: block;
     height: 100%;
-    background: var(--dash-accent);
-    border-radius: 4px;
+    background: var(--dash-widget-accent);
+    border-radius: 20px;
+    transition: width .3s ease;
 }
 .dash-bar-value {
     text-align: right;
     color: var(--dash-text-muted);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+}
+
+/* Avatar + bar rows — the team billable-hours widget. */
+.dash-people {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+.dash-person-row {
+    display: grid;
+    grid-template-columns: 26px 1fr 42px;
+    align-items: center;
+    gap: 10px;
+}
+.dash-person-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--dash-border);
+    flex-shrink: 0;
+}
+.dash-person-main {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+.dash-person-name {
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.dash-person-value {
+    text-align: right;
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--dash-widget-accent);
 }
 
 .dash-widget-link {
     font-size: 12px;
-    color: var(--dash-accent);
+    font-weight: 600;
+    color: var(--dash-widget-accent);
     text-decoration: none;
 }
 .dash-widget-link:hover { text-decoration: underline; }
@@ -203,10 +314,10 @@ html.themes-dark-active .dash-app {
 
 .dash-badge {
     display: inline-block;
-    padding: 2px 10px;
+    padding: 3px 12px;
     border-radius: 20px;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
 }
 .dash-badge-muted { background: var(--dash-border); color: var(--dash-text-muted); }
 .dash-badge-warning { background: rgba(212, 160, 23, .18); color: #d4a017; }
@@ -222,24 +333,30 @@ html.themes-dark-active .dash-app {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 10px;
+    padding: 7px 12px;
     border: 1px solid var(--dash-border);
-    border-radius: 6px;
+    border-radius: 8px;
     color: var(--dash-text);
     text-decoration: none;
     font-size: 12px;
+    font-weight: 600;
 }
 .dash-action-btn:hover {
     background: var(--dash-accent-soft);
-    color: var(--dash-accent);
+    border-color: var(--dash-widget-accent);
+    color: var(--dash-widget-accent);
 }
 
+/* Notes carry their own per-note color dot (more meaningful than the
+   generic widget-accent one), so the list item's default ::before dot is
+   suppressed here. */
+.dash-list-item-nodot .dash-list-item-label::before { content: none; }
 .dash-note-dot {
     display: inline-block;
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    margin-right: 2px;
+    flex-shrink: 0;
 }
 .dash-empty {
     color: var(--dash-text-muted);

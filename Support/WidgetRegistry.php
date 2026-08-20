@@ -6,12 +6,14 @@ use App\User;
 use Modules\Dashboard\Widgets\BexioSyncStatusWidget;
 use Modules\Dashboard\Widgets\HolidayBalanceWidget;
 use Modules\Dashboard\Widgets\MyConversationsWidget;
+use Modules\Dashboard\Widgets\MyWeeklyBillableHoursWidget;
 use Modules\Dashboard\Widgets\NotesWidget;
 use Modules\Dashboard\Widgets\OpenInvoicesWidget;
 use Modules\Dashboard\Widgets\ProjectsWidget;
 use Modules\Dashboard\Widgets\QuickActionsWidget;
 use Modules\Dashboard\Widgets\StatisticsWidget;
 use Modules\Dashboard\Widgets\TasksWidget;
+use Modules\Dashboard\Widgets\TeamBillableHoursWidget;
 use Modules\Dashboard\Widgets\TimetrackingWidget;
 use Modules\Dashboard\Widgets\UpcomingEventsWidget;
 use Modules\Dashboard\Widgets\WeekReportStatusWidget;
@@ -118,6 +120,22 @@ class WidgetRegistry
             'default_size' => 'small',
             'class' => BexioSyncStatusWidget::class,
             'admin_only' => true,
+        ],
+        'team_billable_hours' => [
+            'label' => 'Team',
+            'icon' => 'glyphicon-user',
+            'sizes' => ['small', 'medium', 'large'],
+            'default_size' => 'medium',
+            'class' => TeamBillableHoursWidget::class,
+            'admin_only' => true,
+        ],
+        'my_weekly_billable' => [
+            'label' => 'Weekly Billable Hours',
+            'icon' => 'glyphicon-signal',
+            'sizes' => ['small', 'medium', 'large'],
+            'default_size' => 'medium',
+            'class' => MyWeeklyBillableHoursWidget::class,
+            'admin_only' => false,
         ],
     ];
 

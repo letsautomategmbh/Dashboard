@@ -25,21 +25,21 @@ class MyConversationsWidget implements Widget
         $count = (clone $query)->count();
         $searchUrl = route('conversations.search', ['f' => ['assigned' => $user->id, 'status' => [Conversation::STATUS_ACTIVE, Conversation::STATUS_PENDING]]]);
 
-        $html = '<div class="dash-stat-row"><div class="dash-stat"><span class="dash-stat-value">'.$count.'</span><span class="dash-stat-label">'.e(__('My open conversations')).'</span></div></div>';
+        $html = '<div class="dash-empty-inline margin-bottom">'.$count.' '.e(__('open')).'</div>';
 
-        if ($size !== 'small') {
-            $limit = $size === 'large' ? 6 : 3;
-            $conversations = (clone $query)->orderByDesc('updated_at')->limit($limit)->get();
+        $limit = ['small' => 2, 'medium' => 4, 'large' => 8][$size] ?? 3;
+        $conversations = (clone $query)->orderByDesc('updated_at')->limit($limit)->get();
 
-            if ($conversations->isNotEmpty()) {
-                $html .= '<div class="dash-list">';
-                foreach ($conversations as $conversation) {
-                    $html .= '<a class="dash-list-item" href="'.$conversation->url().'">'
-                        .'<span class="dash-list-item-label">'.e($conversation->subject).'</span>'
-                        .'</a>';
-                }
-                $html .= '</div>';
+        if ($conversations->isEmpty()) {
+            $html .= '<div class="dash-empty-inline">'.e(__('No activity yet.')).'</div>';
+        } else {
+            $html .= '<div class="dash-list">';
+            foreach ($conversations as $conversation) {
+                $html .= '<a class="dash-list-item" href="'.$conversation->url().'">'
+                    .'<span class="dash-list-item-label">'.e($conversation->subject).'</span>'
+                    .'</a>';
             }
+            $html .= '</div>';
         }
 
         $html .= '<a class="dash-widget-link" href="'.$searchUrl.'">'.e(__('View all')).' &rarr;</a>';

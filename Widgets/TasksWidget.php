@@ -7,7 +7,8 @@ use Modules\Invoicing\Entities\Task;
 
 /** "Aufgaben" — "mine" = user_id (no team concept on tasks, unlike
  * Projekte), exact query copied from Invoicing's own sidebar "mine"
- * badge count. */
+ * badge count. Shows the task titles directly rather than a bare count
+ * (even at "small"), per feedback that a lone number wasn't useful. */
 class TasksWidget implements Widget
 {
     public static function isAvailable(User $user): bool
@@ -22,23 +23,23 @@ class TasksWidget implements Widget
         $count = (clone $query)->count();
         $listUrl = route('invoicing.tasks.index', ['filter' => 'mine']);
 
-        $html = '<div class="dash-stat-row"><div class="dash-stat"><span class="dash-stat-value">'.$count.'</span><span class="dash-stat-label">'.e(__('Tasks')).'</span></div></div>';
+        $html = '<div class="dash-empty-inline margin-bottom">'.$count.' '.e(__('open')).'</div>';
 
-        if ($size !== 'small') {
-            $limit = $size === 'large' ? 6 : 3;
-            $tasks = (clone $query)->orderByRaw('due_date IS NULL, due_date ASC')->limit($limit)->get();
+        $limit = ['small' => 2, 'medium' => 4, 'large' => 8][$size] ?? 3;
+        $tasks = (clone $query)->orderByRaw('due_date IS NULL, due_date ASC')->limit($limit)->get();
 
-            if ($tasks->isNotEmpty()) {
-                $html .= '<div class="dash-list">';
-                foreach ($tasks as $task) {
-                    $due = $task->due_date ? $task->due_date->format('d.m.') : '';
-                    $html .= '<a class="dash-list-item" href="'.route('invoicing.tasks.show', $task->id).'">'
-                        .'<span class="dash-list-item-label">'.e($task->title).'</span>'
-                        .($due ? '<span class="dash-list-item-value">'.e($due).'</span>' : '')
-                        .'</a>';
-                }
-                $html .= '</div>';
+        if ($tasks->isEmpty()) {
+            $html .= '<div class="dash-empty-inline">'.e(__('No tasks')).'</div>';
+        } else {
+            $html .= '<div class="dash-list">';
+            foreach ($tasks as $task) {
+                $due = $task->due_date ? $task->due_date->format('d.m.') : '';
+                $html .= '<a class="dash-list-item" href="'.route('invoicing.tasks.show', $task->id).'">'
+                    .'<span class="dash-list-item-label">'.e($task->title).'</span>'
+                    .($due ? '<span class="dash-list-item-value">'.e($due).'</span>' : '')
+                    .'</a>';
             }
+            $html .= '</div>';
         }
 
         $html .= '<a class="dash-widget-link" href="'.$listUrl.'">'.e(__('View all')).' &rarr;</a>';
