@@ -3,8 +3,10 @@
 namespace Modules\Dashboard\Support;
 
 use App\User;
+use Modules\Dashboard\Widgets\AbsencesTodayWidget;
 use Modules\Dashboard\Widgets\BexioSyncStatusWidget;
 use Modules\Dashboard\Widgets\HolidayBalanceWidget;
+use Modules\Dashboard\Widgets\LeaveRequestsWidget;
 use Modules\Dashboard\Widgets\MyConversationsWidget;
 use Modules\Dashboard\Widgets\MyWeeklyBillableHoursWidget;
 use Modules\Dashboard\Widgets\NotesWidget;
@@ -14,6 +16,7 @@ use Modules\Dashboard\Widgets\QuickActionsWidget;
 use Modules\Dashboard\Widgets\StatisticsWidget;
 use Modules\Dashboard\Widgets\TasksWidget;
 use Modules\Dashboard\Widgets\TeamBillableHoursWidget;
+use Modules\Dashboard\Widgets\TimeApprovalsWidget;
 use Modules\Dashboard\Widgets\TimetrackingWidget;
 use Modules\Dashboard\Widgets\UpcomingEventsWidget;
 use Modules\Dashboard\Widgets\WeekReportStatusWidget;
@@ -136,6 +139,30 @@ class WidgetRegistry
             'default_size' => 'medium',
             'class' => MyWeeklyBillableHoursWidget::class,
             'admin_only' => false,
+        ],
+        'time_approvals' => [
+            'label' => 'Time Approvals',
+            'icon' => 'glyphicon-ok-circle',
+            'sizes' => ['small', 'medium', 'large'],
+            'default_size' => 'medium',
+            'class' => TimeApprovalsWidget::class,
+            'admin_only' => true,
+        ],
+        'absences_today' => [
+            'label' => 'Absences Today',
+            'icon' => 'glyphicon-log-out',
+            'sizes' => ['small', 'medium', 'large'],
+            'default_size' => 'medium',
+            'class' => AbsencesTodayWidget::class,
+            'admin_only' => true,
+        ],
+        'leave_requests' => [
+            'label' => 'Holiday & Absence Requests',
+            'icon' => 'glyphicon-plane',
+            'sizes' => ['small', 'medium', 'large'],
+            'default_size' => 'medium',
+            'class' => LeaveRequestsWidget::class,
+            'admin_only' => true,
         ],
     ];
 

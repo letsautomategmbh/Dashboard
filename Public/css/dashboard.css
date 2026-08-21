@@ -76,6 +76,9 @@ html.themes-dark-active .dash-app {
 .dash-widget[data-widget-key="bexio_sync_status"] { --dash-widget-accent: #607d8b; }
 .dash-widget[data-widget-key="team_billable_hours"] { --dash-widget-accent: #7b5ea7; }
 .dash-widget[data-widget-key="my_weekly_billable"] { --dash-widget-accent: #e8734a; }
+.dash-widget[data-widget-key="time_approvals"] { --dash-widget-accent: #d4a017; }
+.dash-widget[data-widget-key="absences_today"] { --dash-widget-accent: #8b5e3c; }
+.dash-widget[data-widget-key="leave_requests"] { --dash-widget-accent: #3f9142; }
 
 .dash-widget-small { grid-column: span 1; grid-row: span 1; }
 .dash-widget-medium { grid-column: span 2; grid-row: span 1; }

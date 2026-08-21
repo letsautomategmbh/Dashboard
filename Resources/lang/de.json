@@ -1,5 +1,8 @@
 {
     "Abrechnungen": "Abrechnungen",
+    "Absence Requests": "Absenzanträge",
+    "Absences": "Absenzen",
+    "Absences Today": "Abwesenheiten heute",
     "Add widget": "Widget hinzufügen",
     "All available widgets are already on your board.": "Alle verfügbaren Widgets sind bereits auf Ihrem Dashboard.",
     "Approved": "Genehmigt",
@@ -15,12 +18,15 @@
     "Connected": "Verbunden",
     "Dashboard": "Dashboard",
     "Drag to reorder": "Zum Verschieben ziehen",
+    "Holiday & Absence Requests": "Urlaubs- und Absenzanträge",
+    "Holiday Requests": "Urlaubsanträge",
     "Internal": "Intern",
     "Last synced": "Zuletzt synchronisiert",
     "Log Time": "Zeit erfassen",
     "My open conversations": "Meine offenen Gespräche",
     "New ticket": "Neues Ticket",
     "No data yet.": "Noch keine Daten.",
+    "No pending requests.": "Keine offenen Anträge.",
     "No quick actions available.": "Keine Schnellzugriffe verfügbar.",
     "No upcoming events.": "Keine anstehenden Termine.",
     "No widgets yet — click \"Add widget\" to get started.": "Noch keine Widgets — klicken Sie auf \"Widget hinzufügen\", um zu starten.",
@@ -44,6 +50,7 @@
     "Team": "Mitarbeiter",
     "This Month": "Dieser Monat",
     "This Week": "Diese Woche",
+    "Time Approvals": "Zeitgenehmigungen",
     "Timetracking": "Zeiterfassung",
     "Today": "Heute",
     "Untitled": "Unbenannt",
@@ -53,5 +60,6 @@
     "Week Report": "Wochenrapport",
     "Weekly Billable Hours": "Verrechenbare Stunden pro Woche",
     "never": "nie",
-    "open": "offen"
+    "open": "offen",
+    "out today": "heute abwesend"
 }

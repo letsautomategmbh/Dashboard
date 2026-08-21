@@ -47,5 +47,8 @@ Each widget key gets a fixed accent color (`.dash-widget[data-widget-key="..."]`
 | `bexio_sync_status` | `Modules\Bexio\Support\BexioAuth` — **admin-only** |
 | `team_billable_hours` | `App\User` + `TimeEntry` — this month's billable hours per active staff member, ranked — **admin-only** (comparative per-person data) |
 | `my_weekly_billable` | `TimeEntry` — the caller's own billable hours per week, last 4/8/12 weeks depending on size |
+| `time_approvals` | `Modules\Invoicing\Entities\TimeEntryApproval` — every staff member's still-pending weekly-report submissions — **admin-only** |
+| `absences_today` | `Modules\Hr\Entities\{HolidayRequest,AbsenceRequest}` — who is out today, combining approved holiday and approved non-vacation absences covering today's date (Hr module only) — **admin-only** |
+| `leave_requests` | `Modules\Hr\Entities\{HolidayRequest,AbsenceRequest}` — the combined still-pending queue from both (Hr module only) — **admin-only** |
 
 Every cross-module widget is soft-optional: `module.json`'s `"requires": []` is intentionally empty, and each such widget's `isAvailable()` checks the source module's class exists before offering itself in the "add widget" picker or rendering on an existing board.
