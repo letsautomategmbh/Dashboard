@@ -4,7 +4,7 @@ A personal, customizable widget grid for FreeScout staff — add/remove widgets,
 
 Lives at its own page/nav entry (`/dashboard`, route name `dashboard.index`), deliberately separate from core FreeScout's own home page (`/`, route name `dashboard`). Core's own dashboard (mailbox cards + Calendar's "Upcoming Events" card via the `dashboard.before` filter) is untouched — the two coexist on purpose.
 
-## Adding a 13th widget
+## Adding a new widget
 
 1. Create `Widgets/YourWidget.php` implementing `Widgets/Widget.php`'s two static methods:
    - `isAvailable(User $user): bool` — gate on the source module actually being installed (`class_exists(...)`) and, if relevant, on `$user->isAdmin()`.
@@ -19,6 +19,10 @@ Nothing else needs to change — `DashboardController` and the view iterate the 
 - Reordering is therefore a plain DOM-sibling-order change, done with `html5sortable.js` (core-shipped, `asset('js/html5sortable.js')`) — the same library Invoicing's Kanban board and KnowledgeBase already use elsewhere in this codebase.
 - One `dashboard_widgets` row per (user, widget instance): `widget_key`, `size`, `position`. Reordering rewrites every row's `position` in one request (KnowledgeBase's whole-array pattern), rather than reconciling incremental deltas.
 - Resizing (`PUT .../{id}/size`) reloads the page rather than only swapping the CSS class — a widget's rendered content (e.g. how many list rows it shows) was only ever rendered server-side at its size at page-load time, so a client-side-only class swap would leave stale content in a newly-resized card.
+
+## Visual system
+
+Each widget key gets a fixed accent color (`.dash-widget[data-widget-key="..."]` in `Public/css/dashboard.css`), drawn from the same 8-hex palette already used project-wide for tags/categories — a new widget that doesn't get an explicit entry there just falls back to the default `--dash-accent`. List-type widgets (Tasks, Projects, My Conversations, Notes) always render their actual list items, even at `small` — a bare count on its own was tried first and dropped as not useful.
 
 ## Scope cuts (v1, deliberate)
 
@@ -41,5 +45,7 @@ Nothing else needs to change — `DashboardController` and the view iterate the 
 | `notes` | `Modules\Notes\Entities\Note::visibleTo()` (Notes module only) |
 | `quick_actions` | No query — curated links into each feature's real create route |
 | `bexio_sync_status` | `Modules\Bexio\Support\BexioAuth` — **admin-only** |
+| `team_billable_hours` | `App\User` + `TimeEntry` — this month's billable hours per active staff member, ranked — **admin-only** (comparative per-person data) |
+| `my_weekly_billable` | `TimeEntry` — the caller's own billable hours per week, last 4/8/12 weeks depending on size |
 
 Every cross-module widget is soft-optional: `module.json`'s `"requires": []` is intentionally empty, and each such widget's `isAvailable()` checks the source module's class exists before offering itself in the "add widget" picker or rendering on an existing board.
