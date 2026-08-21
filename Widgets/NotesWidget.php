@@ -3,13 +3,14 @@
 namespace Modules\Dashboard\Widgets;
 
 use App\User;
+use Modules\Dashboard\Support\ModuleCheck;
 use Modules\Notes\Entities\Note;
 
 class NotesWidget implements Widget
 {
     public static function isAvailable(User $user): bool
     {
-        return class_exists('Modules\Notes\Entities\Note');
+        return ModuleCheck::notes();
     }
 
     public static function render(User $user, string $size): string

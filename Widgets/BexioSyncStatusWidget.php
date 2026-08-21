@@ -4,13 +4,14 @@ namespace Modules\Dashboard\Widgets;
 
 use App\User;
 use Modules\Bexio\Support\BexioAuth;
+use Modules\Dashboard\Support\ModuleCheck;
 
 /** "Bexio-Sync-Status" — admin-only, four Option-backed reads, no query. */
 class BexioSyncStatusWidget implements Widget
 {
     public static function isAvailable(User $user): bool
     {
-        return $user->isAdmin() && class_exists('Modules\Bexio\Support\BexioAuth');
+        return $user->isAdmin() && ModuleCheck::bexio();
     }
 
     public static function render(User $user, string $size): string

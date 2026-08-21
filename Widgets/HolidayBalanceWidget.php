@@ -3,6 +3,7 @@
 namespace Modules\Dashboard\Widgets;
 
 use App\User;
+use Modules\Dashboard\Support\ModuleCheck;
 use Modules\Hr\Support\HolidayBalance;
 
 /** "Ferien-/Urlaubssaldo" — single static call into Hr's own, fully-built
@@ -12,7 +13,7 @@ class HolidayBalanceWidget implements Widget
 {
     public static function isAvailable(User $user): bool
     {
-        return class_exists('Modules\Hr\Support\HolidayBalance');
+        return ModuleCheck::hr();
     }
 
     public static function render(User $user, string $size): string

@@ -3,6 +3,7 @@
 namespace Modules\Dashboard\Widgets;
 
 use App\User;
+use Modules\Dashboard\Support\ModuleCheck;
 use Modules\Invoicing\Entities\Project;
 
 /** "Projekte" — "mine" = manager (user_id) OR team member, exact query
@@ -14,7 +15,7 @@ class ProjectsWidget implements Widget
 {
     public static function isAvailable(User $user): bool
     {
-        return class_exists('Modules\Invoicing\Entities\Project');
+        return ModuleCheck::invoicing();
     }
 
     public static function render(User $user, string $size): string

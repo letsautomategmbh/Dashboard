@@ -4,6 +4,7 @@ namespace Modules\Dashboard\Widgets;
 
 use App\User;
 use Carbon\Carbon;
+use Modules\Dashboard\Support\ModuleCheck;
 use Modules\Hr\Entities\AbsenceRequest;
 use Modules\Hr\Entities\HolidayRequest;
 
@@ -17,7 +18,7 @@ class AbsencesTodayWidget implements Widget
 {
     public static function isAvailable(User $user): bool
     {
-        return $user->isAdmin() && class_exists('Modules\Hr\Entities\HolidayRequest');
+        return $user->isAdmin() && ModuleCheck::hr();
     }
 
     public static function render(User $user, string $size): string

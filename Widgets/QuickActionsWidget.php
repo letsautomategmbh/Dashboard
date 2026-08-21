@@ -3,6 +3,7 @@
 namespace Modules\Dashboard\Widgets;
 
 use App\User;
+use Modules\Dashboard\Support\ModuleCheck;
 
 /** "Schnellzugriff" — no query, a static curated link list into each
  * feature's own real existing create route/page. */
@@ -22,13 +23,9 @@ class QuickActionsWidget implements Widget
             $links[] = ['icon' => 'glyphicon-envelope', 'label' => __('New ticket'), 'url' => route('conversations.create', ['mailbox_id' => $mailbox->id])];
         }
 
-        if (class_exists('Modules\Invoicing\Entities\TimeEntry')) {
+        if (ModuleCheck::invoicing()) {
             $links[] = ['icon' => 'glyphicon-time', 'label' => __('Log Time'), 'url' => route('invoicing.time_entries.create')];
-        }
-        if (class_exists('Modules\Invoicing\Entities\Task')) {
             $links[] = ['icon' => 'glyphicon-check', 'label' => __('Tasks'), 'url' => route('invoicing.tasks.index')];
-        }
-        if (class_exists('Modules\Invoicing\Entities\Project')) {
             $links[] = ['icon' => 'glyphicon-briefcase', 'label' => __('Projects'), 'url' => route('invoicing.projects.index')];
         }
 

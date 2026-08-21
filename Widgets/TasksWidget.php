@@ -3,6 +3,7 @@
 namespace Modules\Dashboard\Widgets;
 
 use App\User;
+use Modules\Dashboard\Support\ModuleCheck;
 use Modules\Invoicing\Entities\Task;
 
 /** "Aufgaben" — "mine" = user_id (no team concept on tasks, unlike
@@ -13,7 +14,7 @@ class TasksWidget implements Widget
 {
     public static function isAvailable(User $user): bool
     {
-        return class_exists('Modules\Invoicing\Entities\Task');
+        return ModuleCheck::invoicing();
     }
 
     public static function render(User $user, string $size): string

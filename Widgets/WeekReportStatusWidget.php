@@ -4,6 +4,7 @@ namespace Modules\Dashboard\Widgets;
 
 use App\User;
 use Carbon\Carbon;
+use Modules\Dashboard\Support\ModuleCheck;
 use Modules\Invoicing\Entities\TimeEntry;
 use Modules\Invoicing\Entities\TimeEntryApproval;
 
@@ -16,7 +17,7 @@ class WeekReportStatusWidget implements Widget
 {
     public static function isAvailable(User $user): bool
     {
-        return class_exists('Modules\Invoicing\Entities\TimeEntryApproval');
+        return ModuleCheck::invoicing();
     }
 
     public static function render(User $user, string $size): string

@@ -4,6 +4,7 @@ namespace Modules\Dashboard\Widgets;
 
 use App\User;
 use Carbon\Carbon;
+use Modules\Dashboard\Support\ModuleCheck;
 use Modules\Invoicing\Entities\TimeEntry;
 
 /** "Zeiterfassung" — today's and this week's captured hours, plus (medium/
@@ -16,7 +17,7 @@ class TimetrackingWidget implements Widget
 {
     public static function isAvailable(User $user): bool
     {
-        return class_exists('Modules\Invoicing\Entities\TimeEntry');
+        return ModuleCheck::invoicing();
     }
 
     public static function render(User $user, string $size): string

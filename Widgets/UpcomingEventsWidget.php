@@ -3,6 +3,7 @@
 namespace Modules\Dashboard\Widgets;
 
 use App\User;
+use Modules\Dashboard\Support\ModuleCheck;
 
 /** Copies Calendar's own dashboard-widget query (Calendar/Support/
  * DashboardWidget.php) rather than calling that class directly — that
@@ -12,7 +13,7 @@ class UpcomingEventsWidget implements Widget
 {
     public static function isAvailable(User $user): bool
     {
-        return class_exists('Modules\Calendar\Entities\CalendarEvent');
+        return ModuleCheck::calendar();
     }
 
     public static function render(User $user, string $size): string

@@ -4,6 +4,7 @@ namespace Modules\Dashboard\Widgets;
 
 use App\User;
 use Carbon\Carbon;
+use Modules\Dashboard\Support\ModuleCheck;
 use Modules\Invoicing\Entities\TimeEntry;
 
 /** "Meine verrechenbaren Stunden pro Woche" — personal (not admin-only,
@@ -15,7 +16,7 @@ class MyWeeklyBillableHoursWidget implements Widget
 {
     public static function isAvailable(User $user): bool
     {
-        return class_exists('Modules\Invoicing\Entities\TimeEntry');
+        return ModuleCheck::invoicing();
     }
 
     public static function render(User $user, string $size): string

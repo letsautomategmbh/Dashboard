@@ -4,6 +4,7 @@ namespace Modules\Dashboard\Widgets;
 
 use App\User;
 use Carbon\Carbon;
+use Modules\Dashboard\Support\ModuleCheck;
 use Modules\Invoicing\Entities\TimeEntry;
 
 /** "Mitarbeiter" — admin-only (comparative per-person data, same
@@ -14,7 +15,7 @@ class TeamBillableHoursWidget implements Widget
 {
     public static function isAvailable(User $user): bool
     {
-        return $user->isAdmin() && class_exists('Modules\Invoicing\Entities\TimeEntry');
+        return $user->isAdmin() && ModuleCheck::invoicing();
     }
 
     public static function render(User $user, string $size): string
