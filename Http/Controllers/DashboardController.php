@@ -54,6 +54,8 @@ class DashboardController extends Controller
                 'label' => $meta['label'],
                 'icon' => $meta['icon'],
                 'cyclable' => count($meta['sizes']) > 1,
+                'configurable' => $meta['configurable'] ?? false,
+                'config' => $row->config ?: [],
                 'html' => $html,
             ];
         }
@@ -123,6 +125,19 @@ class DashboardController extends Controller
         $widget->save();
 
         return response()->json(['success' => true, 'size' => $widget->size]);
+    }
+
+    /** Currently just {city}, but stored as free-form JSON so a future
+     * configurable widget doesn't need its own endpoint/migration. */
+    public function updateConfig(Request $request, $id)
+    {
+        $widget = $this->ownWidgetOrFail($id);
+        $data = $request->validate(['config' => 'required|array']);
+
+        $widget->config = $data['config'];
+        $widget->save();
+
+        return response()->json(['success' => true]);
     }
 
     /** Takes the whole new order of widget ids in one request (same

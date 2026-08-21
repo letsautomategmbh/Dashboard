@@ -19,12 +19,18 @@ use Modules\Dashboard\Widgets\TeamBillableHoursWidget;
 use Modules\Dashboard\Widgets\TimeApprovalsWidget;
 use Modules\Dashboard\Widgets\TimetrackingWidget;
 use Modules\Dashboard\Widgets\UpcomingEventsWidget;
+use Modules\Dashboard\Widgets\WeatherWidget;
 use Modules\Dashboard\Widgets\WeekReportStatusWidget;
 
 /** The widget catalog: key -> {label, icon, sizes, default_size, class,
- * admin_only}. Adding a 13th widget is a one-file addition (a new
- * Widgets/*.php implementing Widget) plus one entry here — nothing else
- * in the module needs to change. */
+ * admin_only, configurable}. Adding a new widget is a one-file addition
+ * (a new Widgets/*.php implementing Widget) plus one entry here —
+ * nothing else in the module needs to change. `configurable` (optional,
+ * defaults to false) shows a settings-gear icon on the widget card; a
+ * configurable widget reads its own saved config directly off its
+ * DashboardWidget row inside render() (see WeatherWidget) rather than
+ * receiving it as a render() parameter — keeps the Widget interface the
+ * same for every widget, configurable or not. */
 class WidgetRegistry
 {
     public static $widgets = [
@@ -163,6 +169,15 @@ class WidgetRegistry
             'default_size' => 'medium',
             'class' => LeaveRequestsWidget::class,
             'admin_only' => true,
+        ],
+        'weather' => [
+            'label' => 'Weather',
+            'icon' => 'glyphicon-cloud',
+            'sizes' => ['small', 'medium', 'large'],
+            'default_size' => 'medium',
+            'class' => WeatherWidget::class,
+            'admin_only' => false,
+            'configurable' => true,
         ],
     ];
 

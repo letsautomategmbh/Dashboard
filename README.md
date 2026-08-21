@@ -9,9 +9,13 @@ Lives at its own page/nav entry (`/dashboard`, route name `dashboard.index`), de
 1. Create `Widgets/YourWidget.php` implementing `Widgets/Widget.php`'s two static methods:
    - `isAvailable(User $user): bool` — gate on the source module actually being installed (`class_exists(...)`) and, if relevant, on `$user->isAdmin()`.
    - `render(User $user, string $size): string` — return the widget's own inner HTML only (no outer card — the view wraps it in `.dash-widget`/`.dash-widget-{size}`). Scale content to `small`/`medium`/`large`.
-2. Add one entry to `Support/WidgetRegistry.php`'s `$widgets` array: `label`, `icon` (a Bootstrap glyphicon class), `sizes` (which of small/medium/large it supports), `default_size`, `class`, `admin_only`.
+2. Add one entry to `Support/WidgetRegistry.php`'s `$widgets` array: `label`, `icon` (a Bootstrap glyphicon class), `sizes` (which of small/medium/large it supports), `default_size`, `class`, `admin_only`, and optionally `configurable` (see below).
 
 Nothing else needs to change — `DashboardController` and the view iterate the registry generically.
+
+### Per-widget-instance settings (the settings-gear icon)
+
+A widget that needs its own configuration (currently only Weather's city) sets `'configurable' => true` in its registry entry — this shows a gear icon on the card, opening a small popover (currently just a `city` text field; extend the shared form in `Resources/views/index.blade.php` if a future widget needs different fields) that `PUT`s to `dashboard.config.update`, storing whatever's submitted as JSON in `DashboardWidget.config`. The widget reads its own config back inside `render()` by querying its own row directly (`DashboardWidget::where('user_id', $user->id)->where('widget_key', '<key>')->first()`) rather than receiving it as a `render()` parameter — see `WeatherWidget::render()` — which keeps the `Widget` interface identical for configurable and non-configurable widgets alike.
 
 ## Grid mechanics
 
@@ -50,5 +54,6 @@ Each widget key gets a fixed accent color (`.dash-widget[data-widget-key="..."]`
 | `time_approvals` | `Modules\Invoicing\Entities\TimeEntryApproval` — every staff member's still-pending weekly-report submissions — **admin-only** |
 | `absences_today` | `Modules\Hr\Entities\{HolidayRequest,AbsenceRequest}` — who is out today, combining approved holiday and approved non-vacation absences covering today's date (Hr module only) — **admin-only** |
 | `leave_requests` | `Modules\Hr\Entities\{HolidayRequest,AbsenceRequest}` — the combined still-pending queue from both (Hr module only) — **admin-only** |
+| `weather` | [Open-Meteo](https://open-meteo.com/) — the only widget backed by an external API (chosen specifically because it needs no API key, same reasoning already applied when Calendar's mini-map used OpenStreetMap/Nominatim over Google Maps) — **configurable** (per-instance `city`, via the settings gear; defaults to Zürich), forecast responses cached 30 minutes |
 
 Every cross-module widget is soft-optional: `module.json`'s `"requires": []` is intentionally empty, and each such widget's `isAvailable()` checks the source module's class exists before offering itself in the "add widget" picker or rendering on an existing board.

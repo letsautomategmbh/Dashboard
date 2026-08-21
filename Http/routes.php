@@ -6,6 +6,7 @@ Route::group(['namespace' => 'Modules\Dashboard\Http\Controllers', 'middleware' 
     Route::get('/', 'DashboardController@index')->name('index');
     Route::post('/', 'DashboardController@store')->name('store');
     Route::put('/{id}/size', 'DashboardController@updateSize')->name('size.update');
+    Route::put('/{id}/config', 'DashboardController@updateConfig')->name('config.update');
     Route::post('/reorder', 'DashboardController@reorder')->name('reorder');
     Route::delete('/{id}', 'DashboardController@destroy')->name('destroy');
 });

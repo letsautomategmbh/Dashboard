@@ -22,6 +22,9 @@
                         <span class="dash-widget-handle glyphicon glyphicon-move" title="{{ __('Drag to reorder') }}"></span>
                         <span class="dash-widget-icon glyphicon {{ $widget['icon'] }}"></span>
                         <span class="dash-widget-title">{{ __($widget['label']) }}</span>
+                        @if ($widget['configurable'])
+                            <button type="button" class="btn-icon dash-widget-settings" title="{{ __('Settings') }}" data-city="{{ $widget['config']['city'] ?? '' }}"><i class="glyphicon glyphicon-cog"></i></button>
+                        @endif
                         @if ($widget['cyclable'])
                             <button type="button" class="btn-icon dash-widget-resize" title="{{ __('Change size') }}"><i class="glyphicon glyphicon-resize-full"></i></button>
                         @endif
@@ -52,6 +55,20 @@
             </div>
         </div>
     </div>
+
+    <div class="dash-picker-backdrop" id="dash-settings-backdrop" style="display:none;">
+        <div class="dash-picker dash-app">
+            <h4>{{ __('Settings') }}</h4>
+            <form id="dash-settings-form">
+                <label for="dash-settings-city">{{ __('City') }}</label>
+                <input type="text" class="form-control" id="dash-settings-city" name="city" placeholder="{{ __('e.g. Zürich') }}">
+                <div class="margin-top" style="text-align:right;">
+                    <button type="button" class="btn btn-default" id="dash-settings-close">{{ __('Close') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 @php
@@ -74,6 +91,30 @@
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         };
+    }
+
+    var settingsBackdrop = document.getElementById('dash-settings-backdrop');
+    var settingsForm = document.getElementById('dash-settings-form');
+    var cityInput = document.getElementById('dash-settings-city');
+    var settingsClose = document.getElementById('dash-settings-close');
+
+    if (settingsBackdrop && settingsForm) {
+        settingsClose.addEventListener('click', function () { settingsBackdrop.style.display = 'none'; });
+        settingsBackdrop.addEventListener('click', function (e) {
+            if (e.target === settingsBackdrop) { settingsBackdrop.style.display = 'none'; }
+        });
+        settingsForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var id = settingsForm.dataset.widgetId;
+            fetch('/dashboard/' + id + '/config', {
+                method: 'PUT',
+                headers: csrfHeaders(),
+                credentials: 'same-origin',
+                body: JSON.stringify({ config: { city: cityInput.value } })
+            }).then(function () {
+                location.reload();
+            }).catch(function () { /* best-effort */ });
+        });
     }
 
     var grid = document.getElementById('dash-grid');
@@ -100,6 +141,15 @@
         grid.addEventListener('click', function (e) {
             var resizeBtn = e.target.closest('.dash-widget-resize');
             var removeBtn = e.target.closest('.dash-widget-remove');
+            var settingsBtn = e.target.closest('.dash-widget-settings');
+
+            if (settingsBtn) {
+                var settingsCard = settingsBtn.closest('.dash-widget');
+                settingsForm.dataset.widgetId = settingsCard.getAttribute('data-widget-id');
+                cityInput.value = settingsBtn.getAttribute('data-city') || '';
+                settingsBackdrop.style.display = 'flex';
+                cityInput.focus();
+            }
 
             if (resizeBtn) {
                 // A full reload, not just swapping the size class — a

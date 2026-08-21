@@ -405,3 +405,82 @@ html.themes-dark-active .dash-app {
     color: var(--dash-text-muted);
     padding: 10px 8px;
 }
+.dash-picker form label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--dash-text-muted);
+    margin-bottom: 4px;
+}
+
+/* Weather widget — the one widget backed by an external API. Icon colors
+   are real weather-appropriate colors (sun=gold, rain=blue, ...), not the
+   widget's own --dash-widget-accent, since a themed sun would just read
+   as wrong regardless of surrounding accent. */
+.dash-weather-now {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.dash-weather-icon { flex-shrink: 0; }
+.dash-weather-now-main {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+.dash-weather-temp {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+}
+.dash-weather-label {
+    font-size: 12px;
+    color: var(--dash-text-muted);
+}
+.dash-weather-hilo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+}
+.dash-weather-hi { font-weight: 700; }
+.dash-weather-lo { color: var(--dash-text-muted); }
+.dash-weather-place {
+    font-size: 11px;
+    color: var(--dash-text-muted);
+    margin: 4px 0 10px;
+}
+
+.dash-weather-week {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.dash-weather-day-row {
+    display: grid;
+    grid-template-columns: 32px 26px 1fr 26px 26px;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+}
+.dash-weather-day-label {
+    color: var(--dash-text-muted);
+    font-weight: 600;
+}
+.dash-weather-range-track {
+    position: relative;
+    background: color-mix(in srgb, var(--dash-widget-accent) 12%, transparent);
+    border-radius: 20px;
+    height: 6px;
+}
+.dash-weather-range-fill {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #4a90d9, #f5a623);
+    border-radius: 20px;
+}
+.dash-weather-day-lo { color: var(--dash-text-muted); text-align: right; font-variant-numeric: tabular-nums; }
+.dash-weather-day-hi { font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }

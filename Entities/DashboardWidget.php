@@ -20,6 +20,11 @@ class DashboardWidget extends Model
         'widget_key',
         'size',
         'position',
+        'config',
+    ];
+
+    protected $casts = [
+        'config' => 'array',
     ];
 
     public function user()
